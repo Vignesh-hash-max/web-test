@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubbles App</title>
+    <style>
+        canvas {
+            border: 3px solid black;
+            display: block;
+            margin: 30px auto;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        Button {
+            color:rgb(234, 9, 167);
+            font-size: 15px; 
+            padding: 10px 20px;
+        }
+        h1 {
+            text-decoration:underline;
+            color: rgb(226, 130, 13);
+        }
+    </style>
+</head>
+<body>
+<h1 align="center">Bubbles App</h1>
+<canvas id="gameCanvas" width="1300" height="500"></canvas>
+<div class="controls">
+   <p align="right"><button id="hitButton" style="margin-right: 10px;">Hit</button>
+    <button id="resetButton" style="margin-right: 115px;">Reset</button></p>
+</div>
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const circle = {
+        x: 190,  
+        y: canvas.height / 2,
+        radius: 150,
+        color: getRandomColor(),
+        draw: function () {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
+    const arrow = {
+        x: canvas.width - 100, 
+        y: canvas.height / 2 - 10,
+        width: 50,
+        height: 30,
+        speed: 7,
+        draw: function () {
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + this.height / 2); 
+            ctx.lineTo(this.x - this.width, this.y + this.height / 2); 
+            ctx.stroke();
+            ctx.lineTo(this.x - this.width + 10, this.y);  
+            ctx.moveTo(this.x - this.width, this.y + this.height / 2); 
+            ctx.lineTo(this.x - this.width + 10, this.y + this.height);  
+            ctx.stroke();
+        }
+    };
+    let arrowMoving = false;
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        circle.draw();
+        arrow.draw();
+    }
+    function updateArrow() {
+        if (arrowMoving && (arrow.x - arrow.width) > circle.x - circle.radius) {
+            arrow.x -= arrow.speed; 
+            draw();
+            if ((arrow.x - arrow.width) <= circle.x + circle.radius) {
+                circle.color = getRandomColor();  
+                arrowMoving = false;  
+            }
+            requestAnimationFrame(updateArrow);
+        }
+    }
+    document.getElementById('hitButton').addEventListener('click', function () {
+        if (!arrowMoving) {
+            arrowMoving = true;
+            updateArrow();
+        }
+    });
+    document.getElementById('resetButton').addEventListener('click', function () {
+        arrow.x = canvas.width - 100;  
+        circle.color = getRandomColor();  
+        draw();
+    });
+    draw();
+</script>
+</body>
+</html>

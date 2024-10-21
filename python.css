@@ -1,0 +1,21 @@
+body {
+    background-color: bisque;
+}
+h1 {
+    color: rgb(246, 14, 52);
+}
+
+h4{
+    color:rgb(81, 19, 226);
+}
+p{
+    color:brown;
+
+}
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    
+}

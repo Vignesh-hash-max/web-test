@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bubbles App - Testing</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+        .controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="500" height="200"></canvas>
+<div class="controls">
+    <button id="hitButton">Hit</button>
+    <button id="resetButton">Reset</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Circle object definition
+    const circle = {
+        x: 50,  // Circle starting x-position
+        y: canvas.height / 2,  // Vertically centered
+        radius: 30,
+        color: getRandomColor(),
+        draw: function() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+    };
+
+    // Arrow object definition
+    const arrow = {
+        x: canvas.width - 100,  // Arrow starting x-position (right side)
+        y: canvas.height / 2 - 10,
+        width: 40,
+        height: 20,
+        speed: 5,
+        draw: function() {
+            // Draw arrow shaft from right to left (←)
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + this.height / 2);  // Start at the right side of the arrow
+            ctx.lineTo(this.x - this.width, this.y + this.height / 2);  // Draw the shaft to the left
+            ctx.stroke();
+
+            // Draw arrowhead (←)
+            ctx.lineTo(this.x - this.width + 10, this.y);  // Upper part of the head
+            ctx.moveTo(this.x - this.width, this.y + this.height / 2);  // Go back to shaft point
+            ctx.lineTo(this.x - this.width + 10, this.y + this.height);  // Lower part of the head
+            ctx.stroke();
+        }
+    };
+
+    let arrowMoving = false;
+    let colorChanged = false;  // Variable to track if color has already changed
+
+    // Function to generate a random hex color
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    // Draw both the circle and arrow on the canvas
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear the canvas before redrawing
+        circle.draw();
+        arrow.draw();
+    }
+
+    // Function to move the arrow towards the circle and detect collision
+    function updateArrow() {
+        if (arrowMoving && arrow.x > circle.x + circle.radius && !colorChanged) {
+            arrow.x -= arrow.speed;  // Move arrow left towards the circle
+            draw();
+            if (arrow.x <= circle.x + circle.radius && !colorChanged) {
+                // Collision detected
+                circle.color = getRandomColor();  // Change the circle's color
+                colorChanged = true;  // Mark the color as changed
+                arrowMoving = false;  // Stop arrow movement after hit
+            }
+            requestAnimationFrame(updateArrow);  // Continue the animation
+        }
+    }
+
+    // Hit button functionality
+    document.getElementById('hitButton').addEventListener('click', function() {
+        if (!arrowMoving && !colorChanged) {
+            arrowMoving = true;
+            updateArrow();
+        }
+    });
+
+    // Reset button functionality to restore the initial state
+    document.getElementById('resetButton').addEventListener('click', function() {
+        arrow.x = canvas.width - 100;  // Reset arrow's position
+        circle.color = getRandomColor();  // Reset circle color
+        colorChanged = false;  // Reset the color change flag
+        arrowMoving = false;  // Stop any ongoing arrow movement
+        draw();  // Redraw the initial state
+    });
+
+    // Initial draw of the canvas
+    draw();
+</script>
+
+</body>
+</html>

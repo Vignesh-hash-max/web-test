@@ -1,0 +1,49 @@
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: gold;
+    color: #333;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: brown;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+
+ul {
+    list-style-type: circle;
+    padding-left: 40px;
+    margin: 20px 0;
+}
+
+
+ul li {
+    font-size: 1.2em;
+    margin: 10px 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+ul li a {
+    
+    color: #0c95f0;
+    display: block;
+}
+
+
+ul li:hover {
+    background-color: #3498db;
+    
+}
+
+
+

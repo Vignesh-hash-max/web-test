@@ -1,0 +1,22 @@
+body {
+    background: url(https://quntnex.com/wp-content/uploads/2024/04/java-img.webp);
+    background-size: cover;
+}
+h1 {
+    color: rgb(246, 14, 52);
+}
+
+h4{
+    color:aqua;
+}
+p{
+    color:brown;
+
+}
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    
+}

@@ -1,0 +1,36 @@
+
+
+body {
+    background: url('https://quntnex.com/wp-content/uploads/2024/05/banner-quntnex-768x550.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+
+
+
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+
+table {
+    color:green;
+     content: 2px; 
+}
+
+
+
+/* Submit button styling */
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    
+}
+
+
+
